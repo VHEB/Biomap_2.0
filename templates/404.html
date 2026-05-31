@@ -1,11 +1,37 @@
-{% extends "base.html" %}
-{% block title %}Página não encontrada - BioMap{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada - BioMap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="header">
+        <!-- Header será renderizado via JavaScript -->
+    </header>
 
-{% block content %}
-    <section style="text-align: center; padding: 50px;">
-        <h1>404</h1>
-        <h2>Página não encontrada</h2>
-        <p>Ops! Parece que você tentou acessar uma página que não existe.</p>
-        <a href="{% url 'index' %}" class="btn-search">Voltar para a página inicial</a>
-    </section>
-{% endblock %}
+    <main>
+        <section id="error-404" style="text-align: center; padding: 50px;">
+            <h1>404</h1>
+            <h2>Página não encontrada</h2>
+            <p>Ops! Parece que você tentou acessar uma página que não existe.</p>
+            <a href="/" id="btn-home" class="btn-search">Voltar para a página inicial</a>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <!-- Footer será renderizado via JavaScript -->
+    </footer>
+
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Inicializar Firebase e integração com Firestore
+        // Código será adicionado aqui
+    </script>
+</body>
+</html>

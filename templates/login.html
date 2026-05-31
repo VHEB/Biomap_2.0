@@ -1,35 +1,47 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Biomap 2.0</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section class="form-section">
+        <div class="form-container">
+            <h2>Login</h2>
 
-{% block content %}
-<section class="form-section">
-    <div class="form-container">
-        <h2>Login</h2>
-
-        <form method="post">
-            {% csrf_token %}
-            
-            {% if form.errors %}
-                <div class="error-message">
-                    <p>Usuário ou senha inválidos. Por favor, tente novamente.</p>
+            <form id="loginForm">
+                
+                <!-- Renderização condicional de erros via JavaScript -->
+                <div id="errorMessage" class="error-message" style="display: none;">
+                    <p id="errorText">Usuário ou senha inválidos. Por favor, tente novamente.</p>
                 </div>
-            {% endif %}
 
-            <div class="form-group">
-                <label for="{{ form.username.id_for_label }}">Usuário ou E-mail</label>
-                {{ form.username }}
-            </div>
+                <div class="form-group">
+                    <label for="username">Usuário ou E-mail</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
 
-            <div class="form-group">
-                <label for="{{ form.password.id_for_label }}">Senha</label>
-                {{ form.password }}
-            </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
 
-            <button type="submit" class="btn-primary">Entrar</button>
-        </form>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
 
-        <p class="text-center">
-            Ainda não tem uma conta? <a href="{% url 'cadastro_usuario' %}">Cadastre-se</a>
-        </p>
-    </div>
-</section>
-{% endblock %}
+            <p class="text-center">
+                Ainda não tem uma conta? <a href="cadastro_usuario.html" id="registerLink">Cadastre-se</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Script para integração com Firebase Authentication e Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

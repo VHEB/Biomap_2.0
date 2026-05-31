@@ -1,70 +1,164 @@
-{% extends "base.html" %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Pesquisa - Biomap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Firebase Auth and Firestore SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js';
+        import { getFirestore, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js';
 
-{% block content %}
-<div class="resultado-container">
-    {% if animal %}
-        <div class="animal-card">
-            <div class="animal-img">
-                <img src="{{ animal.imagem_url }}" alt="{{ animal.nome_cientifico }}">
-            </div>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-            <div class="animal-info">
-                <h2 class="animal-nome">{{ animal.nome_comum }}</h2>
-                <h3 class="animal-cientifico"><em>{{ animal.nome_cientifico }}</em></h3>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-                <div class="animal-detalhes">
-                    <p><strong>Reino:</strong> {{ animal.reino }}</p>
-                    <p><strong>Filo:</strong> {{ animal.filo }}</p>
-                    <p><strong>Classe:</strong> {{ animal.classe }}</p>
-                    <p><strong>Ordem:</strong> {{ animal.ordem }}</p>
-                    <p><strong>Família:</strong> {{ animal.familia }}</p>
-                    <p><strong>Gênero:</strong> {{ animal.genero }}</p>
-                    <p><strong>Categoria:</strong> {{ animal.categoria }}</p>
-                    <p><strong>Endêmico do Brasil:</strong> {{ animal.endemica_brasil|yesno:"Sim,Não" }}</p>
-                    <p><strong>Região:</strong> {{ animal.regiao }}</p>
-                </div>
-            </div>
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Usuário autenticado:", user.email);
+                loadAnimalData();
+            } else {
+                console.log("Usuário não autenticado");
+            }
+        });
 
-            {% if mapa_path %}
-            <div class="mapa-full-width">
-                <div class="mapa-container">
-                    <h4>Mapa de distribuição:</h4>
-                    <img src="/media/{{ mapa_path }}" alt="Mapa de distribuição" class="mapa-estado">
-                </div>
-            </div>
-            {% else %}
-                <p class="sem-local-mapa"><em>Sem mapa de incidência gerado.</em></p>
-            {% endif %}
-
-            <div class="bioma-justificativa-container">
-            <div class="bioma-tags">
-                <p><strong>Biomas:</strong></p>
-                <div class="bioma-list">
-                    {% for bioma in biomas_list %}
-                        <span class="bioma-tag {{ bioma|lower|slugify }}">
-                            {{ bioma }}
-                        </span>
-                    {% empty %}
-                        <span class="sem-local">Não Aplicável</span>
-                    {% endfor %}
-                </div>
-            </div>
+        // Function to load animal data from Firestore or GBIF
+        async function loadAnimalData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const animalId = urlParams.get('id');
             
-            <p class="justificativa-texto"><strong>Justificativa:</strong> {{ animal.justificativa }}</p>
-        </div>
-        </div>
+            if (animalId) {
+                try {
+                    // Query Firestore
+                    const animalsRef = collection(db, 'animals');
+                    const q = query(animalsRef, where('id', '==', animalId));
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (!querySnapshot.empty) {
+                        const animalData = querySnapshot.docs[0].data();
+                        renderAnimalCard(animalData);
+                    } else {
+                        // Try GBIF API if not in Firestore
+                        fetchFromGBIF(animalId);
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar dados:", error);
+                    showNoResult();
+                }
+            } else {
+                showNoResult();
+            }
+        }
 
-        
+        // Function to fetch data from GBIF
+        async function fetchFromGBIF(gbifId) {
+            try {
+                const response = await fetch(`https://api.gbif.org/v1/species/${gbifId}`);
+                const data = await response.json();
+                renderAnimalCard(data);
+            } catch (error) {
+                console.error("Erro ao buscar dados do GBIF:", error);
+                showNoResult();
+            }
+        }
 
+        // Function to render animal card with data
+        function renderAnimalCard(animal) {
+            const container = document.getElementById('animal-card-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="animal-card">
+                        <div class="animal-img">
+                            <img src="${animal.imagem_url || animal.thumbnail || 'placeholder.jpg'}" alt="${animal.nome_cientifico || animal.scientificName}">
+                        </div>
+                        <div class="animal-info">
+                            <h2 class="animal-nome">${animal.nome_comum || animal.commonNames?.[0] || 'N/A'}</h2>
+                            <h3 class="animal-cientifico"><em>${animal.nome_cientifico || animal.scientificName || 'N/A'}</em></h3>
+                            <div class="animal-detalhes">
+                                <p><strong>Reino:</strong> <span id="reino">${animal.reino || animal.kingdom || 'N/A'}</span></p>
+                                <p><strong>Filo:</strong> <span id="filo">${animal.filo || animal.phylum || 'N/A'}</span></p>
+                                <p><strong>Classe:</strong> <span id="classe">${animal.classe || animal.class || 'N/A'}</span></p>
+                                <p><strong>Ordem:</strong> <span id="ordem">${animal.ordem || animal.order || 'N/A'}</span></p>
+                                <p><strong>Família:</strong> <span id="familia">${animal.familia || animal.family || 'N/A'}</span></p>
+                                <p><strong>Gênero:</strong> <span id="genero">${animal.genero || animal.genus || 'N/A'}</span></p>
+                                <p><strong>Categoria:</strong> <span id="categoria">${animal.categoria || 'N/A'}</span></p>
+                                <p><strong>Endêmico do Brasil:</strong> <span id="endemica">${animal.endemica_brasil ? 'Sim' : 'Não'}</span></p>
+                                <p><strong>Região:</strong> <span id="regiao">${animal.regiao || 'N/A'}</span></p>
+                            </div>
+                        </div>
+                        <!-- Renderização do mapa será feita via JavaScript -->
+                        <div id="mapa-container" class="mapa-full-width"></div>
+                        <!-- Biomas e Justificativa -->
+                        <div class="bioma-justificativa-container">
+                            <div class="bioma-tags">
+                                <p><strong>Biomas:</strong></p>
+                                <div class="bioma-list" id="biomas-list"></div>
+                            </div>
+                            <p class="justificativa-texto"><strong>Justificativa:</strong> <span id="justificativa">${animal.justificativa || 'N/A'}</span></p>
+                        </div>
+                    </div>
+                `;
+                renderBiomas(animal.biomas_list);
+                renderMapa(animal.mapa_path);
+            }
+        }
 
-    {% else %}
-        <div class="no-result">
-            <h3>🐾 Nenhum registro encontrado.</h3>
-        </div>
-    {% endif %}
+        // Function to render biomas
+        function renderBiomas(biomas) {
+            const biomasList = document.getElementById('biomas-list');
+            if (biomasList && biomas && biomas.length > 0) {
+                biomasList.innerHTML = biomas.map(bioma => 
+                    `<span class="bioma-tag ${bioma.toLowerCase().replace(/\s+/g, '-')}">${bioma}</span>`
+                ).join('');
+            } else if (biomasList) {
+                biomasList.innerHTML = '<span class="sem-local">Não Aplicável</span>';
+            }
+        }
 
-    <a href="{% url 'pesquisa' %}" class="btn-search">Nova Pesquisa</a>
-</div>
+        // Function to render mapa
+        function renderMapa(mapaPath) {
+            const mapaContainer = document.getElementById('mapa-container');
+            if (mapaContainer && mapaPath) {
+                mapaContainer.innerHTML = `
+                    <div class="mapa-container">
+                        <h4>Mapa de distribuição:</h4>
+                        <img src="/media/${mapaPath}" alt="Mapa de distribuição" class="mapa-estado">
+                    </div>
+                `;
+            } else if (mapaContainer) {
+                mapaContainer.innerHTML = '<p class="sem-local-mapa"><em>Sem mapa de incidência gerado.</em></p>';
+            }
+        }
 
-{% endblock %}
+        // Function to show no result message
+        function showNoResult() {
+            const container = document.getElementById('animal-card-container');
+            if (container) {
+                container.innerHTML = '<div class="no-result"><h3>🐾 Nenhum registro encontrado.</h3></div>';
+            }
+        }
+    </script>
+
+    <div class="resultado-container">
+        <!-- Container that will be populated by JavaScript -->
+        <div id="animal-card-container"></div>
+
+        <a href="pesquisa.html" class="btn-search">Nova Pesquisa</a>
+    </div>
+</body>
+</html>
