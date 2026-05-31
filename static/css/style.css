@@ -1,0 +1,723 @@
+/* Estilização do site. Variaveis de cor, fonte, tamanho, etc. */
+@import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --primary-color: #1E5544;
+    --secondary-color: #E9B436;
+    --tertiary-color: rgb(230, 125, 55);
+    --alert-color: #D32F2F;
+    --font-color: #0A0A0A;
+    --background-color: #FEFEFE;
+    --font-size-h1: 2.5rem; /* 40px */
+    --font-size-h2: 2rem;   /* 32px */
+    --font-size-h3: 1.5rem; /* 24px */
+    --font-size-h4: 1.2rem; /* 19.2px */
+    --font-size-h5: 1rem;   /* 16px */
+    --font-size-h6: 0.8rem; /* 12.8px */
+    --font-size-p: 1rem;    /* 16px */
+    --font-size-small: 0.8rem; /* 12.8px */
+}
+
+body{
+    font-family: 'Tahoma', sans-serif;
+    background-color: var(--background-color);
+}
+
+h1{
+    font-size: var(--font-size-h1);
+    color: var(--primary-color);
+    font-family: 'Knewave', cursive;
+}
+h2{
+    font-size: var(--font-size-h2);
+    color: var(--primary-color);
+    margin: 1.5rem 0;
+}
+h3{
+    font-size: var(--font-size-h3);
+    color: var(--font-color);
+}
+h4{
+    font-size: var(--font-size-h4);
+    color: var(--font-color);
+    margin: 1rem 0;
+}
+h5{
+    font-size: var(--font-size-h5);
+    color: var(--font-color);
+}
+h6{
+    font-size: var(--font-size-h6);
+    color: var(--font-color);
+}
+p{
+    font-size: var(--font-size-p);
+    color: var(--font-color);
+}
+small{
+    font-size: var(--font-size-small);
+    color: var(--tertiary-color);
+}
+
+
+/* HEADER FIXO */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: var(--primary-color);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* CONTAINER FLEX */
+.container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    padding: 50px;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+}
+section {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px;
+    box-shadow: var(--font-color);
+}
+
+/* === BARRA DE PESQUISA E DROPDOWN === */
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-box-wrapper {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box; /* garante alinhamento com o input */
+}
+
+#search-box {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 10px 10px 0 0;  /* borda superior arredondada */
+    border: 2px solid var(--primary-color);
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+#search-box:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;  /* 👈 garante mesma largura */
+    z-index: 999;
+    background-color: var(--background-color);
+    border: 2px solid var(--primary-color);
+    border-top: none; /* 👈 remove a linha dupla com o input */
+    border-radius: 0 0 10px 10px; /* bordas inferiores arredondadas */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    box-sizing: border-box; /* 👈 garante largura igual ao input */
+}
+
+/* Itens da lista */
+.list-group-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* BOTÕES DE PESQUISA (Simples / Avançado) */
+.toggle-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    background-color: transparent;
+    color: var(--primary-color);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.toggle-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.toggle-btn.active {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+/* Resultado */
+
+.animal-card {
+    display: flex;
+    align-items: flex-start;
+    background: var(--background-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.animal-img img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 30px;
+    border: 3px solid var(--primary-color);
+}
+.animal-info h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+.animal-info h3 {
+    margin: 5px 0 15px;
+    font-style: italic;
+    color: var(--font-color); /* Padronizado de #555 */
+}
+.animal-info p {
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
+/* Estilos do Mapa */
+.mapa-container {
+    margin-top: 20px;
+    text-align: center;
+}
+.mapa-estado {
+    max-width: 90%;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* ===== Layout geral do Resultado ===== */
+.resultado-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background: #f9fafc; /* Manter este cinza claro */
+}
+
+/* ===== Cartão principal (Imagem e Info) do Resultado ===== */
+.animal-card {
+    display: flex;
+    flex-wrap: wrap;
+    background: var(--background-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 30px; 
+}
+
+.animal-img {
+    flex: 1 1 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f3f3; /* Manter cinza claro */
+    padding: 20px;
+}
+
+.animal-img img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.animal-info {
+    flex: 2 1 400px;
+    padding: 25px;
+}
+
+.animal-info h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    color: var(--primary-color); /* Padronizado de #004d40 */
+}
+
+.animal-info h3 {
+    font-size: 18px;
+    color: var(--primary-color); /* Padronizado de #00796b */
+    margin-bottom: 15px;
+}
+
+.animal-detalhes p {
+    font-size: 15px;
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+/* ===== Layout Centralizado do Mapa (FINAL) ===== */
+.mapa-full-width {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza o mapa horizontalmente */
+    margin-bottom: 30px; 
+}
+
+.mapa-container {
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+    padding: 20px;
+    background: var(--background-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.mapa-container h4 {
+    margin-bottom: 15px;
+    color: var(--primary-color); /* Padronizado de #004d40 */
+    font-size: 1.5rem;
+}
+
+.mapa-estado {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* ===== Biomas e Justificativa (FINAL) ===== */
+.bioma-justificativa-container {
+    width: 100%;
+    max-width: 900px; 
+    background: var(--background-color);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.bioma-tags {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.bioma-tags p strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: var(--primary-color); /* Padronizado de #004d40 */
+}
+
+.bioma-tag {
+    display: inline-block;
+    padding: 6px 15px;
+    margin: 5px 8px 5px 0;
+    border-radius: 20px; 
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--background-color); /* Padronizado de white */
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.justificativa-texto {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* ===== Cores dos Biomas (Estilização de Círculos) - MANTIDOS COMO ESTÃO ===== */
+/* Estes precisam de cores específicas, por isso não usam as variáveis primárias */
+.cerrado {
+    background-color: #ffd700; 
+    color: #333; 
+}
+.mata-atlantica {
+    background-color: #008000; 
+}
+.amazonia {
+    background-color: #00a000;
+}
+.caatinga {
+    background-color: #ff4500;
+}
+.pampa {
+    background-color: #87ceeb; 
+    color: #333;
+}
+.pantanal {
+    background-color: #800080;
+}
+.sistema-costeiro-marinho {
+    background-color: #1e90ff; 
+}
+
+/* ===== Botão e Mensagens ===== */
+.btn-search {
+    background: var(--primary-color); /* Padronizado de #00796b */
+    color: var(--background-color); /* Padronizado de white */
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-bottom: 30px;
+}
+
+.btn-search:hover {
+    background: #184437; /* Tonalidade escura para o hover de primary */
+}
+
+.no-result {
+    background: #ffeaea;
+    color: #b71c1c;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.sem-local, .sem-local-mapa {
+    color: #757575;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+/* ======================================= */
+/* === ESTILOS DE FORMULÁRIO (LOGIN/EDITAR) === */
+/* ======================================= */
+
+.form-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 40px 20px; /* Adiciona padding para telas pequenas */
+}
+
+.form-container {
+    background: var(--background-color); /* Padronizado de #fff */
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+    max-width: 450px; /* Reduzindo a largura máxima para Login/Editar */
+    width: 100%;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Padronizando inputs */
+input:not([type="checkbox"]), 
+select, 
+textarea {
+    width: 100%;
+    padding: 10px; /* Aumentado o padding para melhor UX */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: var(--font-size-p);
+    box-sizing: border-box; /* Garante que padding não aumente o tamanho */
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+button.btn-primary {
+    width: 100%;
+    background: var(--primary-color); /* Padronizado de #007B5E */
+    color: var(--background-color); /* Padronizado de #fff */
+    border: none;
+    padding: 12px; /* Aumentado o padding */
+    border-radius: 8px;
+    font-size: var(--font-size-h5);
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 15px; /* Adicionado margem superior */
+}
+
+button.btn-primary:hover {
+    background: #184437; /* Tonalidade escura para o hover de primary */
+}
+
+.extra-fields {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Estilos para validação em tempo real e erros */
+.password-check-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%; 
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    pointer-events: none; 
+}
+
+.password-match-message {
+    font-size: 0.85em;
+    margin-top: 5px;
+    padding-left: 2px;
+}
+
+/* Cores dos ícones */
+.password-check-icon.success {
+    color: green; /* Manter green para checkmark, pois não há variável para isso */
+}
+
+.password-check-icon.error {
+    color: var(--alert-color); /* Padronizado de var(--alert-color, #D32F2F) */
+}
+
+/* O form-group da segunda senha precisa de position: relative para posicionar o ícone */
+#password2-group {
+    position: relative;
+}
+
+/* Estilo para erros de campo */
+.field-error {
+    color: var(--alert-color); /* Padronizado de var(--alert-color, #D32F2F) */
+    font-size: var(--font-size-small);
+    margin-top: 5px;
+    padding-left: 2px;
+}
+.error-message { /* Para erros que não são de campo específico */
+    background: #ffe3e3; /* Tonalidade clara do alerta */
+    border: 1px solid var(--alert-color); /* Padronizado de var(--alert-color, #D32F2F) */
+    color: var(--alert-color); /* Padronizado de var(--alert-color, #D32F2F) */
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.help-text {
+    font-size: var(--font-size-small);
+    color: #6c757d; /* Mantido cinza para contraste suave */
+    display: block;
+    margin-top: 5px;
+    padding-left: 2px;
+}
+
+
+/* LOGO */
+.logo {
+    height: 80px;
+}
+
+/* MENU DESKTOP */
+.menu {
+    list-style: none;
+    display: flex;
+}
+
+.menu li {
+    margin-left: 15px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: var(--background-color);
+    background-color: var(--secondary-color);
+    padding: 12px 20px;
+    border-radius: 5px;
+    display: block;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background-color: var(--tertiary-color);
+}
+
+/* MENU MOBILE */
+.menu-mobile {
+    display: none;
+    font-size: 30px;
+    color: var(--background-color);
+    cursor: pointer;
+}
+
+/* footer */
+.main_footer {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    display: relative;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    bottom: 0;
+    
+}
+
+.footer_text {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--background-color);
+    margin-top: 20px;
+}
+
+.footer_social {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.footer_social h3 {
+    font-size: 1.2em;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+
+.footer_center {
+    text-align: center;
+    max-width: 38rem;
+    margin-bottom: 3rem;
+}
+
+.footer_center img {
+    width: 5rem;
+    margin-bottom: 10px;
+}
+
+/* Links do Menu (Direita) */
+.footer_menu {
+    text-align: right;
+}
+
+.footer_menu h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.footer_menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer_menu ul li {
+    margin-bottom: 5px;
+}
+
+.footer_menu ul li a {
+    color: var(--background-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer_menu ul li a:hover {
+    color: var(--secondary-color);
+}
+
+/* Estilos do primeiro texto */
+.footer_slogan {
+    font-size: 1em;
+    font-style: italic;
+    color: var(--secondary-color);
+    word-wrap: break-word;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* Estilos do segundo texto */
+.footer_mission {
+    font-size: 1.1em;
+    font-style: italic;
+    color: var(--background-color);
+    word-wrap: break-word;
+    line-height: 1.3;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.footer_logo img {
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.footer_logo p {
+    font-size: 0.9em;
+    font-style: italic;
+    color: var(--background-color);
+}
+
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+    .toggle-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .toggle-btn {
+        width: 100%;
+    }
+}
