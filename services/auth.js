@@ -49,3 +49,7 @@ export function observeAuth(callback) {
     onAuthStateChanged(auth, callback);
 
 }
+
+export function getCurrentUser() {
+    return auth.currentUser;
+}

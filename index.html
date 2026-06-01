@@ -55,14 +55,17 @@
                     <li><a href="/templates/sobre.html">Sobre</a></li>
                     <li><a href="/templates/contato.html">Contato</a></li>
                     <li><a href="/templates/pesquisa.html">Pesquisar</a></li>
-
+                    <span id="auth-menu"></span>
                 </ul>
             </div>
             
         </div>
     </footer>
     <div id="toast-container"></div>
-    <script type="module" src="/services/test-firebase.js"></script>
+    <script
+        type="module"
+        src="/services/menu.js">
+    </script>
     <script>
     const toast = document.getElementById("toast-container");
     setTimeout(() => toast.style.display = "none", 4000);
