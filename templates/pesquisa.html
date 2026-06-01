@@ -1,86 +1,51 @@
-<section class="pesquisa-section">
-    <h1>Pesquisa de Animais</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Pesquisa - Biomap</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="/static/ico/logo.ico">
+</head>
+<body>
+    <section class="search-section">
 
-    <div class="search-container">
-        <div class="search-box-wrapper">
-            <input type="text" id="search-box" placeholder="Digite o nome do animal...">
-            <ul id="suggestions" class="list-group mt-2"></ul>
-        </div>
-        
-        <div class="toggle-buttons">
-            <button id="btn-comum" class="toggle-btn active" data-mode="comum">Simples</button>
-            <button id="btn-cientifico" class="toggle-btn" data-mode="cientifico">Avançado</button>
-        </div>
-    </div>
-</section>
+    <h2>Pesquisar Espécie</h2>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const searchBox = document.getElementById("search-box");
-    const suggestionsList = document.getElementById("suggestions");
-    const buttons = document.querySelectorAll(".toggle-btn");
-    let modo = "comum";
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa - BioMap</title>
 
-    // Alternar entre modos de busca
-    buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            buttons.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            modo = btn.dataset.mode;
-            suggestionsList.innerHTML = "";
-            searchBox.value = "";
-            searchBox.placeholder = (modo === "comum")
-                ? "Digite o nome comum do animal..."
-                : "Digite o nome científico do animal...";
-        });
-    });
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="/static/ico/logo.ico">
+</head>
 
-    // Função de busca com autocomplete
-    searchBox.addEventListener("input", function () {
-        const query = searchBox.value.trim();
+<body>
 
-        if (query.length < 2) {
-            suggestionsList.innerHTML = "";
-            return;
-        }
+    <section class="search-section">
 
-        fetch(`/autocomplete/?q=${encodeURIComponent(query)}&modo=${modo}`)
-            .then(response => response.json())
-            .then(data => {
-                suggestionsList.innerHTML = "";
+        <h2>Pesquisar Espécie</h2>
 
-                if (!data || data.length === 0) {
-                    const li = document.createElement("li");
-                    li.textContent = "Nenhum resultado encontrado";
-                    li.classList.add("list-group-item", "text-danger", "fw-bold");
-                    suggestionsList.appendChild(li);
-                    return;
-                }
+        <input
+            type="text"
+            id="search-input"
+            placeholder="Digite o nome comum ou científico"
+        >
 
-                // Exibir sugestões
-                data.forEach(item => {
-                    const li = document.createElement("li");
+        <button id="search-btn">
+            Pesquisar
+        </button>
 
-                    // Exibe nome comum e nome científico juntos
-                    if (modo === "comum") {
-                        li.innerHTML = `<strong>${item.comum}</strong><br><small><em>${item.cientifico}</em></small>`;
-                    } else {
-                        li.innerHTML = `<strong><em>${item.cientifico}</em></strong><br><small>${item.comum}</small>`;
-                    }
+        <div id="results"></div>
 
-                    li.classList.add("list-group-item", "suggestion-item");
+    </section>
 
-                    // Redireciona para o resultado usando o nome científico (para manter padronização)
-                    li.addEventListener("click", function () {
-                        window.location.href = `/resultado/${encodeURIComponent(item.cientifico)}/`;
-                    });
-
-                    suggestionsList.appendChild(li);
-                });
-            })
-            .catch(error => console.error("Erro na requisição:", error));
-    });
-});
+<script type="module"
+        src="/static/js/pesquisa.js">
 </script>
 
-<!-- Estrutura convertida para HTML puro. Renderização dinâmica futura via JavaScript, Firebase Authentication, Firestore e GBIF. -->
+</body>
+</html>
