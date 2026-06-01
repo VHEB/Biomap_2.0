@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - BioMap</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <section class="perfil-section">
+        <div class="perfil-container">
+
+            <h2>Meu Perfil</h2>
+
+            <div class="perfil-card">
+
+                <img
+                    id="user-photo"
+                    src="/static/img/default-user.png"
+                    alt="Foto do usuário"
+                    class="perfil-foto"
+                >
+
+                <h3 id="user-name">
+                    Carregando...
+                </h3>
+
+                <p id="user-email">
+                    Carregando...
+                </p>
+
+                <button id="logout-btn">
+                    Sair
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script type="module" src="../services/perfil.js"></script>
+    <style>
+    .perfil-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .perfil-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .perfil-card {
+        text-align: center;
+        padding: 30px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+
+    .perfil-foto {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+
+    #logout-btn {
+        margin-top: 20px;
+    }
+    </style>
+</body>
+</html>
